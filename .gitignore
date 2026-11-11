@@ -1,0 +1,17 @@
+# Environment and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+
+# Build artefacts
+*.egg-info/
+build/
+dist/
+
+# Official data set, fetched with scripts/fetch_data.py (not redistributed here)
+data/
+
+.DS_Store
