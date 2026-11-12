@@ -19,9 +19,10 @@ classifiers = [
 ]
 
 # numpy is no longer listed: the program does not import it, pandas pulls in a
-# compatible release and uv.lock records the exact one.
+# compatible release and uv.lock records the exact one. The lower bound is the
+# oldest pandas line the tests run on (uv.lock: 3.1.1).
 dependencies = [
-  "pandas>=3.0,<4",
+  "pandas>=3.1,<4",
 ]
 
 [dependency-groups]
@@ -35,9 +36,10 @@ dev = [
 # Flat layout with two top-level modules: name the one that is the program.
 py-modules = ["bike_investigation"]
 
-[tool.pytest.ini_options]
+[tool.pytest]
 testpaths = ["test_bike_investigation.py", "tests"]
-addopts = ["--strict-markers", "--strict-config", "-ra"]
+strict = true  # strict config, markers, xfail and parametrization ids (pytest 9)
+addopts = ["-ra"]
 markers = [
   "realdata: needs the official CSV files (python scripts/fetch_data.py)",
 ]
