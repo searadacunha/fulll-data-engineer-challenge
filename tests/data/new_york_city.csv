@@ -1,0 +1,8 @@
+,Start Time,End Time,Trip Duration,Start Station,End Station,User Type,Gender,Birth Year
+1,23/06/2017 15:09:32,23/06/2017 15:14:53,321,Wood St & Hubbard St,Damen Ave & Chicago Ave,Subscriber,Male,1992.0
+2,2017-06-23 15:20:00,2017-06-23 15:30:00,600,Wood St & Hubbard St,Damen Ave & Chicago Ave,Subscriber,Female,2999.0
+3,06/23/2017 15:40:00,06/23/2017 15:50:00,600,Wood St & Hubbard St,Damen Ave & Chicago Ave,Subscriber,Male,1980.0
+4,2017-05-04 09:00:00,2017-05-04 09:10:00,-60,Damen Ave & Chicago Ave,Wood St & Hubbard St,Customer,,
+5,2017-05-04 09:30:00,2017-05-04 09:40:00,,Damen Ave & Chicago Ave,Wood St & Hubbard St,,Female,1985.5
+6,not a date,2017-05-05 10:00:00,abc,Damen Ave & Chicago Ave,,Customer,Male,
+7,2017-13-01 08:00:00,2017-13-01 08:10:00,0,Wood St & Hubbard St,Wood St & Hubbard St,Subscriber,Male,1992.0

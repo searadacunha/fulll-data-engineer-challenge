@@ -1,0 +1,5 @@
+Start Time,End Time,Trip Duration,Start Station,End Station,User Type
+2017-04-03 07:10:00,2017-04-03 07:11:00,60.5,Echo Circle,Foxtrot Plaza,Subscriber
+2017-04-03 07:40:00,2017-04-03 07:42:00,120.25,Echo Circle,Foxtrot Plaza,Subscriber
+2017-04-04 18:00:00,2017-04-04 18:05:00,300.0,Foxtrot Plaza,Echo Circle,Customer
+2017-05-06 10:00:00,2017-05-06 10:00:19,19.25,Echo Circle,Echo Circle,Subscriber

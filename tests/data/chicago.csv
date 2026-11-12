@@ -1,0 +1,12 @@
+,Start Time,End Time,Trip Duration,Start Station,End Station,User Type,Gender,Birth Year
+101,2017-01-02 08:05:10,2017-01-02 08:15:10,600,Alpha St,Bravo Ave,Subscriber,Male,1990.0
+102,2017-01-09 08:30:00,2017-01-09 08:45:00,900,Alpha St,Bravo Ave,Subscriber,Female,1985.0
+103,2017-01-02 17:45:00,2017-01-02 17:50:00,300,Bravo Ave,Alpha St,Customer,,
+104,2017-02-07 17:10:00,2017-02-07 17:17:30,450,Bravo Ave,Alpha St,Subscriber,Male,1990.0
+105,2017-02-07 08:55:00,2017-02-07 09:15:00,1200,Charlie Sq,Delta Rd,Subscriber,Male,1962.0
+106,2017-03-01 12:00:00,2017-03-01 12:25:00,1500,Charlie Sq,Delta Rd,Subscriber,Female,1985.0
+107,2017-03-08 12:30:00,2017-03-08 12:31:00,60,Charlie Sq ,Delta Rd,Customer,,
+108,2017-05-01 08:00:00,2017-05-01 09:00:00,3600,Alpha St,Charlie Sq,Subscriber,Male,1990.0
+109,2017-06-30 23:59:59,2017-07-01 00:29:59,1800,Alpha St,Alpha St,Subscriber,Female,1899.0
+110,2017-06-05 17:00:00,2017-06-05 17:04:00,240,Delta Rd,Bravo Ave,Customer,,
+111,2017-01-08 09:15:00,2017-01-08 09:20:50,350,Delta Rd,Bravo Ave,Dependent,Male,2001.0
