@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.14"]
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+      BIKESHARE_REQUIRE_DATA: "1"  # the integration tests fail instead of being skipped
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.0"
+          enable-cache: true
+      - name: Install the locked environment
+        run: uv sync --locked
+      - name: Lint
+        run: uv run ruff check .
+      - name: Format
+        run: uv run ruff format --check .
+      - name: Fetch the official data
+        run: uv run python scripts/fetch_data.py
+      - name: Tests
+        run: uv run pytest
+      - name: Generated documents are up to date
+        if: matrix.python == '3.14'
+        run: uv run python scripts/make_docs.py --check
+      - name: The tests catch planted mistakes
+        if: matrix.python == '3.14'
+        run: uv run python scripts/mutation_check.py
