@@ -360,6 +360,15 @@ class TestBikeShareData(unittest.TestCase):
         self.assertIsNone(absent["earliestBirthYear"])
         self.assertEqual(absent["mostCommonBirthYear"], [])
 
+    def test_user_stats_equal_counts_are_listed_by_name(self):
+        # pandas lists equal counts in order of appearance: the result must not depend on it.
+        df = pd.DataFrame({"User Type": ["Subscriber", "Customer"], "Gender": ["Male", "Female"]})
+
+        result = user_stats(df)
+
+        self.assertEqual(list(result["userTypeCounts"]), ["Customer", "Subscriber"])
+        self.assertEqual(list(result["genderCounts"]), ["Female", "Male"])
+
     def test_user_stats_never_reports_a_count_of_zero(self):
         df = pd.DataFrame(
             {
