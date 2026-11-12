@@ -11,7 +11,8 @@ __pycache__/
 build/
 dist/
 
-# Official data set, fetched with scripts/fetch_data.py (not redistributed here)
-data/
+# Official data set, fetched with scripts/fetch_data.py (not redistributed here).
+# Anchored to the root: tests/data/ holds the small synthetic files and is committed.
+/data/
 
 .DS_Store
