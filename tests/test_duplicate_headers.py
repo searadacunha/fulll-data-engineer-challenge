@@ -25,7 +25,9 @@ def test_duplicate_csv_headers_are_rejected(monkeypatch, tmp_path, columns):
 def test_header_reader_accepts_unnamed_index_column_and_bom(monkeypatch, tmp_path):
     columns = ("", *CORE_COLUMNS)
     (tmp_path / "chicago.csv").write_text(
-        "\ufeff" + ",".join(columns) + "\n"
+        "\ufeff"
+        + ",".join(columns)
+        + "\n"
         + ",2017-01-02 08:05:10,2017-01-02 08:15:10,600,Alpha St,Bravo Ave,Subscriber\n",
         encoding="utf-8",
     )
