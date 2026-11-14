@@ -325,5 +325,4 @@ the program is compared with an independent recomputation on the official files,
 mutation check shows that the tests catch calculation mistakes. The commits written with the
 agent say so in a `Co-Authored-By` line.
 
-No licence is granted: the skeleton belongs to fulll, and this repository is shared for its
-hiring process only.
+**Licensing:** [MIT](LICENSE) covers only my independently authored contributions. The original fulll challenge skeleton and third-party bike-share data are **not** relicensed here; their terms and the exact scope are explained in [LICENSE-SCOPE.md](LICENSE-SCOPE.md).
