@@ -1,5 +1,7 @@
 # Bike share statistics: fulll Data Engineer Junior challenge
 
+<p align="center"><img src="assets/readme-hero.svg" width="100%" alt="fulll-data-engineer-challenge project banner" /></p>
+
 My solution to the [Data Engineer Junior challenge](https://github.com/fulll/hiring/blob/master/DataEngineer/Junior/data-level-1.md)
 that fulll publishes in its hiring repository. The program explores the bike share trips of
 Chicago, New York City and Washington over the first half of 2017. For a city, a month and a
