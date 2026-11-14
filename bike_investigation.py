@@ -9,6 +9,7 @@ dictionary, so that they can be tested and reused. They share three conventions:
 * a statistic that cannot be computed is ``None`` or an empty list, never zero.
 """
 
+import csv
 import os
 import time
 from datetime import timedelta
@@ -142,6 +143,13 @@ def _squeeze(text):
 
 def _read_city(path):
     """Read one city file into a typed frame: datetimes, numbers and compact text columns."""
+    # pandas renames duplicate headers (e.g. "Start Time.1") before usecols runs,
+    # which would silently discard one of two conflicting source columns.
+    with path.open(encoding="utf-8-sig", newline="") as source:
+        header = next(csv.reader(source), [])
+    if len(header) != len(set(header)):
+        raise ValueError(f"{path.name} has duplicate CSV column names")
+
     known = (*CORE_COLUMNS, *OPTIONAL_COLUMNS)
     df = pd.read_csv(
         path,
