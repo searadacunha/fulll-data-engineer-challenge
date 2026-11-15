@@ -243,7 +243,7 @@ def main():
         "The program was written with these choices from the start: there is no slower "
         "earlier version. Each row compares a choice with the plain way of doing the same "
         "step, which reads the file with the defaults of `pd.read_csv`, lets pandas guess the "
-        "date layout and keeps text columns as text. The program reads only the known columns, "
+        "date layout and keeps text columns as text. The program keeps only the known columns, "
         "gives the date layout, and stores station names, user types and genders as categories "
         "(one small integer per row, each distinct text once).",
         "",

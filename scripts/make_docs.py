@@ -13,6 +13,7 @@ import argparse
 import builtins
 import contextlib
 import io
+import os
 import re
 import sys
 from datetime import timedelta
@@ -627,6 +628,8 @@ def main():
     check = parser.parse_args().check
     if not fetch_data.in_place():
         sys.exit("The official files are missing or modified: run scripts/fetch_data.py")
+    # Figures come from the files just checked, even if BIKESHARE_DATA_DIR points elsewhere.
+    os.environ["BIKESHARE_DATA_DIR"] = str(DATA)
 
     facts = {city: inspect(city) for city in bi.CITY_DATA}
     results = {city: city_results(city) for city in bi.CITY_DATA}

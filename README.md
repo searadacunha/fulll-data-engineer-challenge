@@ -179,9 +179,11 @@ short:
 - **Durations.** In seconds, from the Trip Duration column. A missing, non-numeric, infinite or
   negative duration is left out and counted; zero is kept. With no usable duration, total and
   mean are `None`, never 0, so nothing is ever divided by zero.
-- **Missing data.** A column that does not exist (gender and year of birth in Washington) gives
-  `None` and "not available in this data set"; a column that exists but is empty gives `{}` or
-  `[]` and "no value recorded". Trips with no value are counted in the report, never as zero.
+- **Missing data.** A column that does not exist (gender and year of birth in Washington) prints
+  "not available in this data set"; a column that exists but is empty prints "no value recorded".
+  For user types and genders the result tells them apart too (`None` against `{}`); for years of
+  birth it does not (`None`, `None` and `[]` in both cases), only the report does. A cell made only
+  of spaces counts as empty. Trips with no value are counted in the report, never as zero.
 - **Years of birth.** Whole numbers only, reported as recorded. The trips of riders not yet born
   or over 100 at the trip date are counted in the report, since the statement gives no cut-off.
 - **Filters.** On the start time: a month from January to June, a day from Monday to Sunday,
@@ -270,6 +272,7 @@ formatting counts.
 | Unreadable timestamp, duration or year of birth | Left out of the statistic and counted in a note of the report. |
 | No trip matches the filters | "No trip matches these filters.", no statistic is invented. |
 | Column absent from a city file | "not available in this data set", and `None` in the result. |
+| A row with more fields than the header (an unquoted comma), duplicate column names, a broken quote | `ValueError`: the file is refused, nothing is shifted into another column. |
 
 ## Performance
 
