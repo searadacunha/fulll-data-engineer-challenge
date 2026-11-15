@@ -9,7 +9,6 @@ dictionary, so that they can be tested and reused. They share three conventions:
 * a statistic that cannot be computed is ``None`` or an empty list, never zero.
 """
 
-import csv
 import os
 import time
 from datetime import timedelta
@@ -137,29 +136,36 @@ def _parse_times(values):
 
 
 def _squeeze(text):
-    """Collapse runs of spaces and trim the ends ("23rd & E St NW " -> "23rd & E St NW")."""
-    return " ".join(text.split())
+    """Collapse runs of spaces and trim the ends ("23rd & E St NW " -> "23rd & E St NW").
+
+    A cell made only of spaces is a missing value, not a station or a user type named "".
+    """
+    return " ".join(text.split()) or None
 
 
 def _read_city(path):
     """Read one city file into a typed frame: datetimes, numbers and compact text columns."""
-    # pandas renames duplicate headers (e.g. "Start Time.1") before usecols runs,
-    # which would silently discard one of two conflicting source columns.
-    with path.open(encoding="utf-8-sig", newline="") as source:
-        header = next(csv.reader(source), [])
+    # pandas renames duplicate headers (e.g. "Start Time.1"), which would silently discard one of
+    # two conflicting source columns. The header is read by pandas itself, so that it skips the
+    # same blank lines as the read below, and a broken quote is a ParserError (a ValueError).
+    first_row = pd.read_csv(path, header=None, nrows=1, dtype=str, keep_default_na=False)
+    header = first_row.iloc[0].tolist() if len(first_row) else []
     if len(header) != len(set(header)):
         raise ValueError(f"{path.name} has duplicate CSV column names")
 
     known = (*CORE_COLUMNS, *OPTIONAL_COLUMNS)
+    # Every column is parsed, so pandas refuses a row with more fields than the header (an
+    # unquoted comma in a station name) instead of shifting its values into other columns.
     df = pd.read_csv(
         path,
-        usecols=lambda name: name in known,  # skips the unnamed row id of the raw export
+        index_col=0 if header[:1] == [""] else None,  # the unnamed row id of the raw export
         dtype={
             "Start Time": "string",
             "End Time": "string",
             **dict.fromkeys(TEXT_COLUMNS, "category"),
         },
     )
+    df = df[[name for name in df.columns if name in known]].reset_index(drop=True)
     missing = [name for name in CORE_COLUMNS if name not in df.columns]
     if missing:
         raise ValueError(f"{path.name} lacks the column(s): {', '.join(missing)}")
@@ -255,6 +261,7 @@ def time_stats(df):
     print("\nCalculating The Most Frequent Times of Travel...\n")
     start_time = time.perf_counter()
 
+    df = df.reset_index(drop=True)  # labels align: a repeated one (pd.concat) breaks it
     start = _start_times(df).dropna()
     stats = {
         "mostCommonMonth": [MONTH_NAMES[month - 1] for month in _modes(start.dt.month)],
@@ -317,6 +324,14 @@ def station_stats(df):
     return stats
 
 
+def _clock(seconds):
+    """The duration as " (3 days, 2:00:00)", or "" when it is beyond what timedelta can show."""
+    try:
+        return f" ({timedelta(seconds=round(seconds))})"
+    except OverflowError:
+        return ""
+
+
 def trip_duration_stats(df):
     """Displays statistics on the total and average trip duration.
 
@@ -333,7 +348,8 @@ def trip_duration_stats(df):
 
     stats = {"totalTravelTime": None, "meanTravelTime": None}
     if "Trip Duration" in df.columns:
-        durations = pd.to_numeric(df["Trip Duration"], errors="coerce")
+        # float64 before summing: an int64 sum wraps around silently past 2**63
+        durations = pd.to_numeric(df["Trip Duration"], errors="coerce").astype("float64")
         usable = durations[durations.between(0, float("inf"), inclusive="left")]
         if len(usable):
             stats = {
@@ -345,8 +361,8 @@ def trip_duration_stats(df):
         print("No usable trip duration.")
     else:
         total, mean = stats["totalTravelTime"], stats["meanTravelTime"]
-        print(f"Total travel time: {total:,.0f} seconds ({timedelta(seconds=round(total))})")
-        print(f"Mean travel time: {mean:,.1f} seconds ({timedelta(seconds=round(mean))})")
+        print(f"Total travel time: {total:,.0f} seconds{_clock(total)}")
+        print(f"Mean travel time: {mean:,.1f} seconds{_clock(mean)}")
         if len(usable) < len(df):
             print(f"Note: {len(df) - len(usable):,} trip(s) without a usable duration left out.")
 
@@ -383,6 +399,7 @@ def user_stats(df):
     print("\nCalculating User Stats...\n")
     start_time = time.perf_counter()
 
+    df = df.reset_index(drop=True)  # labels align: a repeated one (pd.concat) breaks it
     stats = {
         "userTypeCounts": _counts(df, "User Type"),
         "genderCounts": _counts(df, "Gender"),
